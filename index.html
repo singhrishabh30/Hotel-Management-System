@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMIÈRE — Hotel Management</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">✦</span>
+    <div>
+      <div class="logo-name">LUMIÈRE</div>
+      <div class="logo-tag">Hotel Management</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <span class="nav-icon">◈</span><span>Dashboard</span>
+    </a>
+    <a class="nav-item" data-page="booking" onclick="navigate('booking')">
+      <span class="nav-icon">◉</span><span>Online Booking</span>
+    </a>
+    <a class="nav-item" data-page="reservations" onclick="navigate('reservations')">
+      <span class="nav-icon">◧</span><span>Reservations</span>
+    </a>
+    <a class="nav-item" data-page="rooms" onclick="navigate('rooms')">
+      <span class="nav-icon">▣</span><span>Rooms</span>
+    </a>
+    <a class="nav-item" data-page="guests" onclick="navigate('guests')">
+      <span class="nav-icon">◎</span><span>Guests</span>
+    </a>
+    <a class="nav-item" data-page="checkin" onclick="navigate('checkin')">
+      <span class="nav-icon">◆</span><span>Check-In / Out</span>
+    </a>
+    <a class="nav-item" data-page="restaurant" onclick="navigate('restaurant')">
+      <span class="nav-icon">◐</span><span>Restaurant</span>
+    </a>
+    <a class="nav-item" data-page="housekeeping" onclick="navigate('housekeeping')">
+      <span class="nav-icon">◑</span><span>Housekeeping</span>
+    </a>
+    <a class="nav-item" data-page="billing" onclick="navigate('billing')">
+      <span class="nav-icon">◒</span><span>Billing</span>
+    </a>
+    <a class="nav-item" data-page="staff" onclick="navigate('staff')">
+      <span class="nav-icon">◓</span><span>Staff</span>
+    </a>
+    <a class="nav-item" data-page="reports" onclick="navigate('reports')">
+      <span class="nav-icon">◔</span><span>Reports</span>
+    </a>
+    <a class="nav-item" data-page="settings" onclick="navigate('settings')">
+      <span class="nav-icon">◕</span><span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">GM</div>
+    <div>
+      <div class="user-name">General Manager</div>
+      <div class="user-role">Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main" id="main">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="date-display" id="dateDisplay"></div>
+      <button class="notif-btn" onclick="showToast('No new notifications')">🔔 <span class="notif-badge">3</span></button>
+    </div>
+  </header>
+
+  <!-- PAGES -->
+
+  <!-- ═══════════ DASHBOARD ═══════════ -->
+  <section class="page active" id="page-dashboard">
+    <div class="page-header">
+      <h1>Good morning, <em>Manager</em></h1>
+      <p class="sub">Here's your hotel at a glance.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card" style="--accent:#c9a96e">
+        <div class="stat-icon">🏨</div>
+        <div class="stat-val" id="statOccupancy">78%</div>
+        <div class="stat-label">Occupancy Rate</div>
+        <div class="stat-bar"><div class="stat-fill" style="width:78%;background:#c9a96e"></div></div>
+      </div>
+      <div class="stat-card" style="--accent:#8fa8c8">
+        <div class="stat-icon">🛎</div>
+        <div class="stat-val" id="statCheckins">12</div>
+        <div class="stat-label">Today's Check-Ins</div>
+      </div>
+      <div class="stat-card" style="--accent:#a8c8a0">
+        <div class="stat-icon">🚪</div>
+        <div class="stat-val" id="statCheckouts">8</div>
+        <div class="stat-label">Today's Check-Outs</div>
+      </div>
+      <div class="stat-card" style="--accent:#c8a0b4">
+        <div class="stat-icon">💰</div>
+        <div class="stat-val" id="statRevenue">₹1,24,500</div>
+        <div class="stat-label">Today's Revenue</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="card">
+        <div class="card-head">Room Status Overview</div>
+        <div class="room-legend">
+          <span class="leg-dot" style="background:#a8c8a0"></span>Available (22)
+          <span class="leg-dot" style="background:#c9a96e"></span>Occupied (38)
+          <span class="leg-dot" style="background:#c8a0b4"></span>Maintenance (4)
+          <span class="leg-dot" style="background:#8fa8c8"></span>Reserved (16)
+        </div>
+        <div class="room-grid-mini" id="dashRoomGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Today's Arrivals</div>
+        <div class="mini-list" id="arrivalsToday"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Recent Activity</div>
+        <div class="activity-feed" id="activityFeed"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Revenue This Week</div>
+        <div class="bar-chart" id="revenueChart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ONLINE BOOKING ═══════════ -->
+  <section class="page" id="page-booking">
+    <div class="page-header">
+      <h1>Online <em>Booking</em></h1>
+      <p class="sub">Reserve your perfect stay.</p>
+    </div>
+
+    <div class="booking-layout">
+      <div class="booking-form-card card">
+        <h2 class="form-title">Search Availability</h2>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Check-In Date</label>
+            <input type="date" id="bookCheckIn" class="input" />
+          </div>
+          <div class="form-group">
+            <label>Check-Out Date</label>
+            <input type="date" id="bookCheckOut" class="input" />
+          </div>
+          <div class="form-group">
+            <label>Adults</label>
+            <select class="input" id="bookAdults">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Children</label>
+            <select class="input" id="bookChildren">
+              <option selected>0</option><option>1</option><option>2</option><option>3</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="searchRooms()">Search Rooms</button>
+      </div>
+
+      <div id="searchResults" class="room-results"></div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Complete Your Booking</h3>
+          <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="selected-room-info" id="selectedRoomInfo"></div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>First Name</label>
+              <input class="input" id="guestFName" placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input class="input" id="guestLName" placeholder="Doe" />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input class="input" type="email" id="guestEmail" placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input class="input" id="guestPhone" placeholder="+91 XXXXX XXXXX" />
+            </div>
+            <div class="form-group">
+              <label>ID Type</label>
+              <select class="input" id="guestIdType">
+                <option>Aadhar Card</option><option>Passport</option><option>Driver's License</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ID Number</label>
+              <input class="input" id="guestIdNum" placeholder="XXXX-XXXX-XXXX" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Special Requests</label>
+            <textarea class="input" id="guestRequests" rows="3" placeholder="Any special requests..."></textarea>
+          </div>
+          <div class="booking-summary" id="bookingSummary"></div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('bookingModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="confirmBooking()">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ RESERVATIONS ═══════════ -->
+  <section class="page" id="page-reservations">
+    <div class="page-header flex-between">
+      <div>
+        <h1><em>Reservations</em></h1>
+        <p class="sub">Manage all bookings.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openNewReservation()">+ New Reservation</button>
+    </div>
+
+    <div class="card">
+      <div class="table-controls">
+        <input class="input search-input" placeholder="Search reservations..." oninput="filterReservations(this.value)" />
+        <select class="input" onchange="filterResStatus(this.value)" style="width:160px">
+          <option value="">All Status</option>
+          <option>Confirmed</option><option>Pending</option><option>Cancelled</option><option>Checked-In</option>
+        </select>
+      </div>
+      <table class="data-table" id="reservationTable">
+        <thead>
+          <tr>
+            <th>Booking ID</th><th>Guest</th><th>Room</th>
+            <th>Check-In</th><th>Check-Out</th><th>Status</th><th>Amount</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reservationBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ ROOMS ═══════════ -->
+  <section class="page" id="page-rooms">
+    <div class="page-header flex-between">
+      <div>
+        <h1>Room <em>Management</em></h1>
+        <p class="sub">View and manage all rooms.</p>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline" onclick="setRoomView('grid')" id="gridViewBtn">Grid</button>
+        <button class="btn btn-outline" onclick="setRoomView('list')" id="listViewBtn">List</button>
+        <button class="btn btn-primary" onclick="openAddRoom()">+ Add Room</button>
+      </div>
+    </div>
+
+    <div class="room-filters">
+      <button class="filter-btn active" onclick="filterRooms('all',this)">All</button>
+      <button class="filter-btn" onclick="filterRooms('available',this)">Available</button>
+      <button class="filter-btn" onclick="filterRooms('occupied',this)">Occupied</button>
+      <button class="filter-btn" onclick="filterRooms('maintenance',this)">Maintenance</button>
+      <button class="filter-btn" onclick="filterRooms('reserved',this)">Reserved</button>
+    </div>
+
+    <div id="roomsContainer" class="rooms-grid"></div>
+
+    <!-- Add Room Modal -->
+    <div class="modal-overlay" id="addRoomModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Add New Room</h3>
+          <button class="modal-close" onclick="closeModal('addRoomModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Room Number</label>
+              <input class="input" id="newRoomNum" placeholder="101" />
+            </div>
+            <div class="form-group">
+              <label>Floor</label>
+              <select class="input" id="newRoomFloor">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Type</label>
+              <select class="input" id="newRoomType">
+                <option>Standard</option><option>Deluxe</option><option>Suite</option><option>Presidential</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Capacity</label>
+              <select class="input" id="newRoomCap">
+                <option>1</option><option>2</option><option>3</option><option>4</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Price / Night (₹)</label>
+              <input class="input" id="newRoomPrice" type="number" placeholder="3500" />
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select class="input" id="newRoomStatus">
+                <option>Available</option><option>Occupied</option><option>Maintenance</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Amenities</label>
+            <div class="amenity-checks">
+              <label><input type="checkbox" value="WiFi" checked /> WiFi</label>
+              <label><input type="checkbox" value="AC" checked /> AC</label>
+              <label><input type="checkbox" value="TV" checked /> TV</label>
+              <label><input type="checkbox" value="Mini Bar" /> Mini Bar</label>
+              <label><input type="checkbox" value="Jacuzzi" /> Jacuzzi</label>
+              <label><input type="checkbox" value="Balcony" /> Balcony</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('addRoomModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="addRoom()">Add Room</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ GUESTS ═══════════ -->
+  <section class="page" id="page-guests">
+    <div class="page-header flex-between">
+      <div>
+        <h1>Guest <em>Directory</em></h1>
+        <p class="sub">All guest records and history.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddGuest()">+ Add Guest</button>
+    </div>
+
+    <div class="card">
+      <div class="table-controls">
+        <input class="input search-input" placeholder="Search guests..." oninput="filterGuests(this.value)" />
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Guest ID</th><th>Name</th><th>Email</th><th>Phone</th>
+            <th>Nationality</th><th>Visits</th><th>VIP</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="guestBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Add Guest Modal -->
+    <div class="modal-overlay" id="addGuestModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Add New Guest</h3>
+          <button class="modal-close" onclick="closeModal('addGuestModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group"><label>First Name</label><input class="input" id="ngFName" /></div>
+            <div class="form-group"><label>Last Name</label><input class="input" id="ngLName" /></div>
+            <div class="form-group"><label>Email</label><input class="input" type="email" id="ngEmail" /></div>
+            <div class="form-group"><label>Phone</label><input class="input" id="ngPhone" /></div>
+            <div class="form-group"><label>Nationality</label><input class="input" id="ngNat" placeholder="Indian" /></div>
+            <div class="form-group"><label>Date of Birth</label><input class="input" type="date" id="ngDob" /></div>
+            <div class="form-group"><label>ID Type</label>
+              <select class="input" id="ngIdType"><option>Aadhar</option><option>Passport</option><option>License</option></select>
+            </div>
+            <div class="form-group"><label>ID Number</label><input class="input" id="ngIdNum" /></div>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" id="ngVip" /> VIP Guest</label>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('addGuestModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="addGuest()">Save Guest</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHECK-IN / OUT ═══════════ -->
+  <section class="page" id="page-checkin">
+    <div class="page-header">
+      <h1>Check-In / <em>Check-Out</em></h1>
+      <p class="sub">Process arrivals and departures.</p>
+    </div>
+
+    <div class="checkinout-grid">
+      <div class="card">
+        <div class="card-head">🛎 Check-In</div>
+        <div class="form-group">
+          <label>Booking ID / Guest Name</label>
+          <input class="input" id="ciSearch" placeholder="Search booking..." />
+        </div>
+        <button class="btn btn-primary" onclick="processCheckIn()">Process Check-In</button>
+        <div class="ci-list" id="pendingArrivals">
+          <div class="card-head" style="margin-top:1.5rem">Pending Arrivals</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">🚪 Check-Out</div>
+        <div class="form-group">
+          <label>Room Number / Guest Name</label>
+          <input class="input" id="coSearch" placeholder="Search occupied rooms..." />
+        </div>
+        <button class="btn btn-primary" onclick="processCheckOut()">Process Check-Out</button>
+        <div class="ci-list" id="pendingDepartures">
+          <div class="card-head" style="margin-top:1.5rem">Today's Departures</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ RESTAURANT ═══════════ -->
+  <section class="page" id="page-restaurant">
+    <div class="page-header flex-between">
+      <div>
+        <h1>Restaurant <em>Orders</em></h1>
+        <p class="sub">In-house dining and room service.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openNewOrder()">+ New Order</button>
+    </div>
+
+    <div class="rest-grid">
+      <div class="card">
+        <div class="card-head">Active Orders</div>
+        <div id="activeOrders" class="order-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">Menu Categories</div>
+        <div class="menu-cats">
+          <div class="menu-cat-btn active" onclick="showMenuCat('all',this)">All</div>
+          <div class="menu-cat-btn" onclick="showMenuCat('breakfast',this)">Breakfast</div>
+          <div class="menu-cat-btn" onclick="showMenuCat('lunch',this)">Lunch/Dinner</div>
+          <div class="menu-cat-btn" onclick="showMenuCat('beverages',this)">Beverages</div>
+          <div class="menu-cat-btn" onclick="showMenuCat('desserts',this)">Desserts</div>
+        </div>
+        <div id="menuGrid" class="menu-grid"></div>
+      </div>
+    </div>
+
+    <!-- New Order Modal -->
+    <div class="modal-overlay" id="orderModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>New Restaurant Order</h3>
+          <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Order Type</label>
+              <select class="input" id="orderType">
+                <option>Dine-In</option><option>Room Service</option><option>Takeaway</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Table / Room No.</label>
+              <input class="input" id="orderTable" placeholder="e.g. Table 5 or Room 203" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Select Items</label>
+            <div id="orderMenuSelect" class="order-menu-select"></div>
+          </div>
+          <div class="order-cart" id="orderCart">
+            <div class="cart-head">Selected Items</div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal"></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('orderModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ HOUSEKEEPING ═══════════ -->
+  <section class="page" id="page-housekeeping">
+    <div class="page-header flex-between">
+      <div>
+        <h1><em>Housekeeping</em></h1>
+        <p class="sub">Manage room cleaning and maintenance.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openHKTask()">+ Assign Task</button>
+    </div>
+
+    <div class="hk-filters">
+      <button class="filter-btn active" onclick="filterHK('all',this)">All Tasks</button>
+      <button class="filter-btn" onclick="filterHK('pending',this)">Pending</button>
+      <button class="filter-btn" onclick="filterHK('in-progress',this)">In Progress</button>
+      <button class="filter-btn" onclick="filterHK('completed',this)">Completed</button>
+    </div>
+
+    <div class="hk-grid" id="hkGrid"></div>
+
+    <!-- HK Task Modal -->
+    <div class="modal-overlay" id="hkModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Assign Housekeeping Task</h3>
+          <button class="modal-close" onclick="closeModal('hkModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group"><label>Room</label>
+              <select class="input" id="hkRoom" id="hkRoom"></select>
+            </div>
+            <div class="form-group"><label>Task Type</label>
+              <select class="input" id="hkType">
+                <option>Regular Cleaning</option><option>Deep Cleaning</option>
+                <option>Turndown Service</option><option>Maintenance</option><option>Inspection</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Assign To</label>
+              <select class="input" id="hkStaff">
+                <option>Sunita Devi</option><option>Ramesh Kumar</option>
+                <option>Priya Singh</option><option>Anil Verma</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Priority</label>
+              <select class="input" id="hkPriority">
+                <option>Normal</option><option>High</option><option>Urgent</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Notes</label>
+            <textarea class="input" id="hkNotes" rows="3" placeholder="Any specific instructions..."></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('hkModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="assignHKTask()">Assign Task</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ BILLING ═══════════ -->
+  <section class="page" id="page-billing">
+    <div class="page-header flex-between">
+      <div>
+        <h1>Billing & <em>Invoices</em></h1>
+        <p class="sub">Generate and manage guest bills.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openBillGen()">+ Generate Bill</button>
+    </div>
+
+    <div class="billing-layout">
+      <div class="card">
+        <div class="card-head">Recent Invoices</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Invoice #</th><th>Guest</th><th>Room</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="invoiceBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Payment Summary</div>
+        <div class="payment-stats">
+          <div class="pay-stat"><div class="pay-val" id="totalPaid">₹0</div><div class="pay-lbl">Total Paid</div></div>
+          <div class="pay-stat"><div class="pay-val" id="totalPending">₹0</div><div class="pay-lbl">Pending</div></div>
+          <div class="pay-stat"><div class="pay-val" id="totalToday">₹0</div><div class="pay-lbl">Today</div></div>
+        </div>
+        <div class="pay-methods">
+          <div class="pay-method"><span>💳 Card</span><span id="pmCard">45%</span></div>
+          <div class="pay-method"><span>📱 UPI</span><span id="pmUpi">35%</span></div>
+          <div class="pay-method"><span>💵 Cash</span><span id="pmCash">20%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bill Generator Modal -->
+    <div class="modal-overlay" id="billModal">
+      <div class="modal modal-wide">
+        <div class="modal-head">
+          <h3>Generate Invoice</h3>
+          <button class="modal-close" onclick="closeModal('billModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group"><label>Guest / Booking ID</label><input class="input" id="billGuest" /></div>
+            <div class="form-group"><label>Room</label><input class="input" id="billRoom" /></div>
+          </div>
+          <div class="bill-items">
+            <div class="card-head">Bill Items</div>
+            <div id="billItemsList">
+              <div class="bill-item-row">
+                <input class="input" placeholder="Description" style="flex:2" id="billDesc0" />
+                <input class="input" placeholder="Qty" type="number" style="flex:0.5" id="billQty0" value="1" />
+                <input class="input" placeholder="Rate (₹)" type="number" style="flex:1" id="billRate0" />
+              </div>
+            </div>
+            <button class="btn btn-outline" style="margin-top:0.5rem" onclick="addBillItem()">+ Add Item</button>
+          </div>
+          <div class="form-grid-2" style="margin-top:1rem">
+            <div class="form-group"><label>Tax (%)</label><input class="input" id="billTax" type="number" value="18" /></div>
+            <div class="form-group"><label>Discount (%)</label><input class="input" id="billDisc" type="number" value="0" /></div>
+          </div>
+          <div class="form-group"><label>Payment Method</label>
+            <select class="input" id="billPayMethod">
+              <option>Card</option><option>UPI</option><option>Cash</option><option>Bank Transfer</option>
+            </select>
+          </div>
+          <div class="bill-total-preview" id="billTotalPreview"></div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('billModal')">Cancel</button>
+          <button class="btn btn-outline" onclick="previewBill()">Preview</button>
+          <button class="btn btn-primary" onclick="generateBill()">Generate & Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ STAFF ═══════════ -->
+  <section class="page" id="page-staff">
+    <div class="page-header flex-between">
+      <div>
+        <h1>Staff <em>Management</em></h1>
+        <p class="sub">Hotel employees and scheduling.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddStaff()">+ Add Staff</button>
+    </div>
+
+    <div class="card">
+      <div class="table-controls">
+        <input class="input search-input" placeholder="Search staff..." oninput="filterStaff(this.value)" />
+        <select class="input" onchange="filterStaffDept(this.value)" style="width:180px">
+          <option value="">All Departments</option>
+          <option>Front Desk</option><option>Housekeeping</option><option>Restaurant</option>
+          <option>Security</option><option>Maintenance</option>
+        </select>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Department</th><th>Role</th><th>Shift</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="staffBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div class="modal-overlay" id="addStaffModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Add Staff Member</h3>
+          <button class="modal-close" onclick="closeModal('addStaffModal')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group"><label>First Name</label><input class="input" id="sfFName" /></div>
+            <div class="form-group"><label>Last Name</label><input class="input" id="sfLName" /></div>
+            <div class="form-group"><label>Department</label>
+              <select class="input" id="sfDept">
+                <option>Front Desk</option><option>Housekeeping</option><option>Restaurant</option>
+                <option>Security</option><option>Maintenance</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Role</label><input class="input" id="sfRole" placeholder="e.g. Receptionist" /></div>
+            <div class="form-group"><label>Shift</label>
+              <select class="input" id="sfShift">
+                <option>Morning (7AM-3PM)</option><option>Evening (3PM-11PM)</option><option>Night (11PM-7AM)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Phone</label><input class="input" id="sfPhone" /></div>
+            <div class="form-group"><label>Email</label><input class="input" type="email" id="sfEmail" /></div>
+            <div class="form-group"><label>Join Date</label><input class="input" type="date" id="sfJoin" /></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-outline" onclick="closeModal('addStaffModal')">Cancel</button>
+          <button class="btn btn-primary" onclick="addStaff()">Add Staff</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ REPORTS ═══════════ -->
+  <section class="page" id="page-reports">
+    <div class="page-header">
+      <h1>Reports & <em>Analytics</em></h1>
+      <p class="sub">Insights and performance metrics.</p>
+    </div>
+
+    <div class="reports-grid">
+      <div class="card">
+        <div class="card-head">Occupancy Report</div>
+        <div class="report-chart" id="occupancyChart"></div>
+        <div class="report-stats">
+          <div class="r-stat"><div>78%</div><div>Current</div></div>
+          <div class="r-stat"><div>82%</div><div>Last Month</div></div>
+          <div class="r-stat"><div>↓4%</div><div>Change</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Revenue Breakdown</div>
+        <div class="rev-breakdown">
+          <div class="rev-item"><span>Room Revenue</span><div class="rev-bar-wrap"><div class="rev-bar" style="width:65%;background:#c9a96e"></div></div><span>65%</span></div>
+          <div class="rev-item"><span>Restaurant</span><div class="rev-bar-wrap"><div class="rev-bar" style="width:20%;background:#8fa8c8"></div></div><span>20%</span></div>
+          <div class="rev-item"><span>Events</span><div class="rev-bar-wrap"><div class="rev-bar" style="width:10%;background:#a8c8a0"></div></div><span>10%</span></div>
+          <div class="rev-item"><span>Other</span><div class="rev-bar-wrap"><div class="rev-bar" style="width:5%;background:#c8a0b4"></div></div><span>5%</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Guest Statistics</div>
+        <div class="guest-stats-wrap">
+          <div class="gs-item"><div class="gs-num" id="gsTotal">0</div><div>Total Guests</div></div>
+          <div class="gs-item"><div class="gs-num" id="gsVip">0</div><div>VIP Guests</div></div>
+          <div class="gs-item"><div class="gs-num" id="gsNew">0</div><div>New This Month</div></div>
+          <div class="gs-item"><div class="gs-num" id="gsRepeat">0</div><div>Repeat Guests</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Monthly Revenue Trend</div>
+        <div class="trend-chart" id="trendChart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SETTINGS ═══════════ -->
+  <section class="page" id="page-settings">
+    <div class="page-header">
+      <h1>System <em>Settings</em></h1>
+      <p class="sub">Configure your hotel management system.</p>
+    </div>
+
+    <div class="settings-layout">
+      <div class="settings-nav">
+        <div class="s-nav-item active" onclick="showSettingsTab('hotel',this)">Hotel Info</div>
+        <div class="s-nav-item" onclick="showSettingsTab('pricing',this)">Pricing</div>
+        <div class="s-nav-item" onclick="showSettingsTab('policies',this)">Policies</div>
+        <div class="s-nav-item" onclick="showSettingsTab('notifications',this)">Notifications</div>
+      </div>
+
+      <div class="settings-content">
+        <div class="settings-tab active" id="tab-hotel">
+          <div class="card">
+            <h3 class="card-head">Hotel Information</h3>
+            <div class="form-grid-2">
+              <div class="form-group"><label>Hotel Name</label><input class="input" value="LUMIÈRE Grand Hotel" id="setHotelName" /></div>
+              <div class="form-group"><label>Star Rating</label>
+                <select class="input" id="setStars"><option>3</option><option>4</option><option selected>5</option></select>
+              </div>
+              <div class="form-group"><label>Phone</label><input class="input" value="+91 99999 11111" /></div>
+              <div class="form-group"><label>Email</label><input class="input" value="info@lumiere.com" /></div>
+              <div class="form-group" style="grid-column:span 2"><label>Address</label><textarea class="input" rows="2">123, Marine Drive, Mumbai, Maharashtra - 400002</textarea></div>
+              <div class="form-group"><label>Check-In Time</label><input class="input" type="time" value="14:00" /></div>
+              <div class="form-group"><label>Check-Out Time</label><input class="input" type="time" value="11:00" /></div>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Hotel information saved!')">Save Changes</button>
+          </div>
+        </div>
+
+        <div class="settings-tab" id="tab-pricing">
+          <div class="card">
+            <h3 class="card-head">Pricing Configuration</h3>
+            <div class="price-table">
+              <div class="price-row header"><span>Room Type</span><span>Weekday</span><span>Weekend</span></div>
+              <div class="price-row"><span>Standard</span><input class="input" value="3500" /><input class="input" value="4200" /></div>
+              <div class="price-row"><span>Deluxe</span><input class="input" value="5500" /><input class="input" value="6500" /></div>
+              <div class="price-row"><span>Suite</span><input class="input" value="9500" /><input class="input" value="11000" /></div>
+              <div class="price-row"><span>Presidential</span><input class="input" value="22000" /><input class="input" value="25000" /></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:1rem" onclick="showToast('Pricing updated!')">Update Pricing</button>
+          </div>
+        </div>
+
+        <div class="settings-tab" id="tab-policies">
+          <div class="card">
+            <h3 class="card-head">Hotel Policies</h3>
+            <div class="form-group"><label>Cancellation Policy</label>
+              <textarea class="input" rows="4">Free cancellation up to 48 hours before check-in. After that, one night's charge applies.</textarea>
+            </div>
+            <div class="form-group"><label>Pet Policy</label>
+              <select class="input"><option>No Pets Allowed</option><option>Pets Allowed (Extra charge)</option></select>
+            </div>
+            <div class="form-group"><label>Smoking Policy</label>
+              <select class="input"><option>Non-smoking Property</option><option>Designated Smoking Areas</option></select>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Policies saved!')">Save Policies</button>
+          </div>
+        </div>
+
+        <div class="settings-tab" id="tab-notifications">
+          <div class="card">
+            <h3 class="card-head">Notification Settings</h3>
+            <div class="notif-settings">
+              <div class="notif-row"><span>New Booking Alerts</span><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Check-In Reminders</span><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Housekeeping Updates</span><label class="toggle"><input type="checkbox" /><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Revenue Reports (Daily)</span><label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Low Occupancy Alerts</span><label class="toggle"><input type="checkbox" /><span class="slider"></span></label></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:1.5rem" onclick="showToast('Notification settings saved!')">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
